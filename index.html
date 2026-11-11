@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeutschLingo - ฝึกศัพท์ภาษาเยอรมัน A1.1 (ครบทุกหมวด)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Nunito for playful Duolingo style typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Nunito', 'sans-serif'],
+          },
+          colors: {
+            duoGreen: '#58cc02',
+            duoGreenDark: '#46a302',
+            duoBlue: '#1cb0f6',
+            duoBlueDark: '#1899d6',
+            duoRed: '#ff4b4b',
+            duoRedDark: '#ea2b2b',
+            duoYellow: '#ffc800',
+            duoYellowDark: '#e5b200',
+            duoPurple: '#ce82ff',
+            duoPurpleDark: '#b657ff',
+            duoOrange: '#ff9600',
+            duoGray: '#e5e5e5',
+            duoText: '#4b4b4b',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .btn-3d {
+      transition: all 0.1s ease;
+      position: relative;
+    }
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(4px);
+      box-shadow: none !important;
+    }
+    .btn-duo-green {
+      background-color: #58cc02;
+      box-shadow: 0 4px 0 #46a302;
+    }
+    .btn-duo-green:hover:not(:disabled) {
+      background-color: #61df02;
+    }
+    .btn-duo-blue {
+      background-color: #1cb0f6;
+      box-shadow: 0 4px 0 #1899d6;
+    }
+    .btn-duo-blue:hover:not(:disabled) {
+      background-color: #33beff;
+    }
+    .btn-duo-orange {
+      background-color: #ff9600;
+      box-shadow: 0 4px 0 #e58700;
+    }
+    .btn-duo-orange:hover:not(:disabled) {
+      background-color: #ffab2e;
+    }
+    .btn-duo-purple {
+      background-color: #ce82ff;
+      box-shadow: 0 4px 0 #b657ff;
+    }
+    .btn-duo-purple:hover:not(:disabled) {
+      background-color: #d896ff;
+    }
+    .btn-duo-gray {
+      background-color: #ffffff;
+      border: 2px solid #e5e5e5;
+      box-shadow: 0 4px 0 #e5e5e5;
+      color: #4b4b4b;
+    }
+    .btn-duo-gray:hover:not(:disabled) {
+      background-color: #f7f7f7;
+    }
+    .btn-duo-gray.selected {
+      background-color: #ddf4ff;
+      border-color: #84d8ff;
+      box-shadow: 0 4px 0 #84d8ff;
+      color: #1cb0f6;
+    }
+    .btn-duo-red {
+      background-color: #ff4b4b;
+      box-shadow: 0 4px 0 #ea2b2b;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 4px;
+    }
+    
+    @keyframes pulseHeart {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+    .animate-heart {
+      animation: pulseHeart 0.4s ease-in-out;
+    }
+    
+    @keyframes bounceGentle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-bounce-gentle {
+      animation: bounceGentle 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-duoText font-sans min-h-screen flex flex-col justify-between select-none">
+
+  <!-- TOP BAR -->
+  <header class="sticky top-0 z-30 bg-white border-b-2 border-slate-200 px-4 py-3 shadow-sm">
+    <div class="max-w-3xl mx-auto flex items-center justify-between">
+      
+      <!-- Back / Navigation -->
+      <button id="header-back-btn" onclick="goToHome()" class="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition font-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span class="hidden sm:inline">หน้าแรก</span>
+      </button>
+
+      <!-- Quiz Progress Bar -->
+      <div id="quiz-progress-container" class="hidden flex-1 mx-4 max-w-md">
+        <div class="flex justify-between text-xs font-bold text-slate-400 mb-1">
+          <span>ความคืบหน้า</span>
+          <span id="quiz-queue-count">0/0</span>
+        </div>
+        <div class="w-full bg-slate-200 rounded-full h-3.5 overflow-hidden border border-slate-300">
+          <div id="quiz-progress-bar" class="bg-duoGreen h-full w-0 transition-all duration-300 rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- App Logo -->
+      <div id="app-title-container" class="flex items-center gap-2 cursor-pointer" onclick="goToHome()">
+        <div class="w-9 h-9 bg-duoGreen rounded-xl flex items-center justify-center text-white font-black text-xl shadow-sm">🇩🇪</div>
+        <span class="font-extrabold text-xl tracking-wide text-duoGreen hidden sm:inline">DeutschLingo</span>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="flex items-center gap-3 sm:gap-4 text-sm font-extrabold">
+        <button onclick="openLibrary()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-300 transition flex items-center gap-1">
+          <span>📖</span> <span class="hidden sm:inline">คลังศัพท์</span>
+        </button>
+        <div class="flex items-center gap-1 text-orange-500" title="วันฝึกต่อเนื่อง">
+          <span class="text-base sm:text-lg">🔥</span>
+          <span id="stat-streak">1</span>
+        </div>
+        <div class="flex items-center gap-1 text-amber-500" title="คะแนน XP">
+          <span class="text-base sm:text-lg">⭐</span>
+          <span id="stat-xp">0</span>
+        </div>
+        <div id="heart-stat-box" class="flex items-center gap-1 text-duoRed" title="หัวใจ">
+          <span class="text-base sm:text-lg">❤️</span>
+          <span id="stat-hearts">5</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="flex-1 max-w-3xl w-full mx-auto p-4 flex flex-col justify-center">
+    
+    <!-- ==================== VIEW 1: HOME / LEVEL MAP ==================== -->
+    <section id="view-home" class="py-4 space-y-6">
+      
+      <!-- Banner -->
+      <div class="bg-gradient-to-r from-duoGreen to-emerald-600 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
+        <div class="relative z-10 max-w-lg">
+          <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase backdrop-blur-sm">ครบ 10 หมวด NetzNeu A1.1</span>
+          <h1 class="text-2xl sm:text-3xl font-black mt-2 mb-1">คลังคำศัพท์ A1.1 แบบสุ่มข้อ</h1>
+          <p class="text-emerald-100 text-sm font-medium">ตอบผิดระบบจะสุ่มวนมาให้ฝึกซ้ำจนกว่าจะจำได้แม่นยำ!</p>
+          
+          <div class="mt-4 flex flex-wrap gap-3">
+            <button onclick="startQuiz(-1)" class="btn-3d btn-duo-orange px-5 py-2.5 rounded-2xl text-white font-black text-sm flex items-center gap-2">
+              <span>🎲</span> โหมดสุ่มรวมทุกหมวด (Endless Mix)
+            </button>
+            <button onclick="openLibrary()" class="btn-3d btn-duo-purple px-4 py-2.5 rounded-2xl text-white font-black text-sm flex items-center gap-2">
+              <span>📖</span> เปิดคลังศัพท์ทั้งหมด
+            </button>
+          </div>
+        </div>
+        <div class="absolute -right-4 -bottom-6 text-8xl opacity-20 pointer-events-none select-none">🏰</div>
+      </div>
+
+      <!-- Refill Hearts Notice -->
+      <div id="heart-restore-card" class="hidden bg-red-50 border-2 border-red-200 rounded-2xl p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">💔</span>
+          <div>
+            <h4 class="font-extrabold text-red-700">หัวใจของคุณหมดแล้ว!</h4>
+            <p class="text-xs text-red-600">เติมหัวใจกลับเป็น 5 ดวงเต็มเพื่อฝึกฝนต่อ</p>
+          </div>
+        </div>
+        <button onclick="restoreHearts()" class="btn-3d btn-duo-green px-4 py-2 rounded-xl text-white font-black text-sm">
+          เติมหัวใจ ❤️
+        </button>
+      </div>
+
+      <!-- Category Grid -->
+      <div>
+        <h2 class="text-lg font-black text-slate-700 mb-4 flex items-center gap-2">
+          <span>📚</span> หมวดหมู่คำศัพท์ (10 หมวดหลัก)
+        </h2>
+        <div id="levels-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+      </div>
+
+    </section>
+
+    <!-- ==================== VIEW 2: QUIZ / PRACTICE ==================== -->
+    <section id="view-quiz" class="hidden flex-1 flex flex-col justify-between py-2">
+      
+      <!-- Question Container Card -->
+      <div class="bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm my-auto space-y-6">
+        
+        <!-- Header Badge & Audio Button -->
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div class="flex items-center gap-2">
+            <span id="question-badge" class="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-xs font-black tracking-wide uppercase">
+              แปลความหมาย
+            </span>
+            <span id="requeue-tag" class="hidden bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full text-xs font-bold">
+              🔄 ข้อทบทวน
+            </span>
+          </div>
+          <button id="speech-btn" onclick="playCurrentAudio()" class="text-duoBlue hover:text-duoBlueDark transition flex items-center gap-1.5 font-bold text-sm bg-sky-50 px-3 py-1.5 rounded-full border border-sky-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+            <span>ฟังเสียง 🔊</span>
+          </button>
+        </div>
+
+        <!-- Question Prompt -->
+        <div class="text-center py-2">
+          <h3 id="question-subtext" class="text-slate-400 font-bold text-sm mb-1">คำนี้แปลว่าอะไร?</h3>
+          <h2 id="question-prompt" class="text-2xl sm:text-3xl font-black text-slate-800 tracking-wide">
+            Deutschland
+          </h2>
+          <div id="question-extra" class="text-sm font-semibold text-slate-500 mt-1 hidden"></div>
+        </div>
+
+        <!-- Options Container -->
+        <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"></div>
+
+      </div>
+
+    </section>
+
+    <!-- ==================== VIEW 3: VICTORY / LEVEL COMPLETE ==================== -->
+    <section id="view-victory" class="hidden text-center py-8 space-y-6 my-auto">
+      <div class="relative inline-block">
+        <div class="text-8xl animate-bounce-gentle">🏆</div>
+        <div class="absolute -top-2 -right-2 bg-duoYellow text-white font-black text-xs px-2.5 py-1 rounded-full shadow">EXCELLENT!</div>
+      </div>
+      
+      <div>
+        <h2 class="text-3xl font-black text-slate-800">จำคำศัพท์ครบทุกข้อแล้ว!</h2>
+        <p class="text-slate-500 font-bold mt-1" id="victory-level-name">หมวดหมู่ทดสอบ</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-3 gap-3 max-w-md mx-auto">
+        <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-4">
+          <div class="text-amber-500 text-xs font-black uppercase">XP ที่ได้รับ</div>
+          <div id="victory-xp" class="text-2xl font-black text-amber-600 mt-1">+50</div>
+        </div>
+        <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-4">
+          <div class="text-emerald-500 text-xs font-black uppercase">คำตอบแม่นยำ</div>
+          <div id="victory-accuracy" class="text-2xl font-black text-emerald-600 mt-1">100%</div>
+        </div>
+        <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-4">
+          <div class="text-sky-500 text-xs font-black uppercase">เวลาที่ใช้</div>
+          <div id="victory-time" class="text-2xl font-black text-sky-600 mt-1">1m 20s</div>
+        </div>
+      </div>
+
+      <div class="pt-4 max-w-md mx-auto flex flex-col gap-3">
+        <button onclick="nextLevelOrHome()" class="btn-3d btn-duo-green w-full py-3.5 rounded-2xl text-white font-black text-lg">
+          ลุยหมวดถัดไป ➔
+        </button>
+        <button onclick="goToHome()" class="btn-3d btn-duo-gray w-full py-3 rounded-2xl font-extrabold text-slate-600">
+          กลับหน้าหลัก
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 4: GAME OVER ==================== -->
+    <section id="view-gameover" class="hidden text-center py-8 space-y-6 my-auto">
+      <div class="text-8xl">💔</div>
+      <div>
+        <h2 class="text-3xl font-black text-slate-800">หัวใจหมดแล้ว!</h2>
+        <p class="text-slate-500 font-bold mt-1">ไม่ต้องท้อ เติมหัวใจแล้วลองฝึกใหม่อีกครั้ง</p>
+      </div>
+
+      <div class="pt-4 max-w-xs mx-auto space-y-3">
+        <button onclick="restoreHearts(); startQuiz(currentLevelIndex);" class="btn-3d btn-duo-green w-full py-3.5 rounded-2xl text-white font-black text-lg">
+          เติมหัวใจ & ลองใหม่ ❤️
+        </button>
+        <button onclick="goToHome()" class="btn-3d btn-duo-gray w-full py-3 rounded-2xl font-extrabold text-slate-600">
+          กลับหน้าหลัก
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 5: VOCAB LIBRARY ==================== -->
+    <section id="view-library" class="hidden py-4 space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-black text-slate-800">📖 คลังคำศัพท์ A1.1 ทั้งหมด</h2>
+          <p class="text-xs font-bold text-slate-500">คำศัพท์ทั้งหมดจากหนังสือ Netzwerk Neu A1.1 (บทที่ 1–5)</p>
+        </div>
+        <button onclick="goToHome()" class="btn-3d btn-duo-gray px-3 py-1.5 rounded-xl font-bold text-sm">
+          ✕ ปิด
+        </button>
+      </div>
+
+      <!-- Search and Filter Bar -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input type="text" id="lib-search" oninput="renderLibraryItems()" placeholder="🔍 ค้นหาคำศัพท์ (ภาษาเยอรมัน/ไทย)..." class="flex-1 border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-duoBlue" />
+        <select id="lib-category-filter" onchange="renderLibraryItems()" class="border-2 border-slate-200 rounded-2xl px-3 py-2.5 text-sm font-bold text-slate-700 focus:outline-none focus:border-duoBlue">
+          <option value="ALL">ทุกหมวดหมู่</option>
+        </select>
+      </div>
+
+      <!-- List Container -->
+      <div id="library-list-container" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
+        <!-- Dynamic items -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM FEEDBACK DRAWER -->
+  <div id="bottom-feedback" class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-slate-200 transform translate-y-full transition-transform duration-300 ease-out">
+    <div class="max-w-3xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <div id="feedback-info" class="flex items-center gap-4 w-full sm:w-auto">
+        <div id="feedback-icon-bg" class="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-2xl font-black flex-shrink-0">
+          ✓
+        </div>
+        <div>
+          <h4 id="feedback-title" class="font-black text-lg leading-tight">ถูกต้อง!</h4>
+          <p id="feedback-detail" class="text-sm font-semibold opacity-90 mt-0.5">เยี่ยมมาก!</p>
+        </div>
+      </div>
+
+      <div class="w-full sm:w-auto flex-shrink-0">
+        <button id="feedback-action-btn" onclick="handleBottomButtonClick()" class="btn-3d btn-duo-green w-full sm:w-48 py-3.5 rounded-2xl text-white font-black text-base tracking-wide uppercase">
+          ตรวจคำตอบ
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       COMPLETE VOCABULARY DATASET (NETZWERK NEU A1.1 KAPITEL 1-5)
+       ========================================================================== */
+    const MASTER_VOCAB = [
+      // 1. LÄNDER UND SPRACHEN
+      { cat: 0, catName: "Länder und Sprachen", de: "Deutschland", th: "ประเทศเยอรมนี", lang: "Deutsch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Österreich", th: "ประเทศออสเตรีย", lang: "Deutsch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Schweiz", article: "die", th: "ประเทศสวิตเซอร์แลนด์", lang: "Deutsch / Französisch / Italienisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Frankreich", th: "ประเทศฝรั่งเศส", lang: "Französisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Spanien", th: "ประเทศสเปน", lang: "Spanisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Italien", th: "ประเทศอิตาลี", lang: "Italienisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Polen", th: "ประเทศโปแลนด์", lang: "Polnisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Türkei", article: "die", th: "ประเทศตุรกี", lang: "Türkisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Thailand", th: "ประเทศไทย", lang: "Thai" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Japan", th: "ประเทศญี่ปุ่น", lang: "Japanisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "China", th: "ประเทศจีน", lang: "Chinesisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "USA", article: "die", th: "สหรัฐอเมริกา", plural: "die USA", lang: "Englisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Libanon", article: "der", th: "ประเทศเลบานอน", lang: "Arabisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Irak", article: "der", th: "ประเทศอิรัก", lang: "Arabisch" },
+      { cat: 0, catName: "Länder und Sprachen", de: "Iran", article: "der", th: "ประเทศอิหร่าน", lang: "Persisch" },
+
+      // 2. ZAHLEN
+      { cat: 1, catName: "Zahlen", de: "null", th: "0" },
+      { cat: 1, catName: "Zahlen", de: "eins", th: "1" },
+      { cat: 1, catName: "Zahlen", de: "zwei", th: "2" },
+      { cat: 1, catName: "Zahlen", de: "drei", th: "3" },
+      { cat: 1, catName: "Zahlen", de: "vier", th: "4" },
+      { cat: 1, catName: "Zahlen", de: "fünf", th: "5" },
+      { cat: 1, catName: "Zahlen", de: "sechs", th: "6" },
+      { cat: 1, catName: "Zahlen", de: "sieben", th: "7" },
+      { cat: 1, catName: "Zahlen", de: "acht", th: "8" },
+      { cat: 1, catName: "Zahlen", de: "neun", th: "9" },
+      { cat: 1, catName: "Zahlen", de: "zehn", th: "10" },
+      { cat: 1, catName: "Zahlen", de: "elf", th: "11" },
+      { cat: 1, catName: "Zahlen", de: "zwölf", th: "12" },
+      { cat: 1, catName: "Zahlen", de: "dreizehn", th: "13" },
+      { cat: 1, catName: "Zahlen", de: "vierzehn", th: "14" },
+      { cat: 1, catName: "Zahlen", de: "fünfzehn", th: "15" },
+      { cat: 1, catName: "Zahlen", de: "sechzehn", th: "16 (ตัด -s)" },
+      { cat: 1, catName: "Zahlen", de: "siebzehn", th: "17 (ตัด -en)" },
+      { cat: 1, catName: "Zahlen", de: "achtzehn", th: "18" },
+      { cat: 1, catName: "Zahlen", de: "neunzehn", th: "19" },
+      { cat: 1, catName: "Zahlen", de: "zwanzig", th: "20" },
+      { cat: 1, catName: "Zahlen", de: "einundzwanzig", th: "21" },
+      { cat: 1, catName: "Zahlen", de: "dreißig", th: "30 (ใช้ -ßig)" },
+      { cat: 1, catName: "Zahlen", de: "vierzig", th: "40" },
+      { cat: 1, catName: "Zahlen", de: "fünfzig", th: "50" },
+      { cat: 1, catName: "Zahlen", de: "sechzig", th: "60 (ตัด -s)" },
+      { cat: 1, catName: "Zahlen", de: "siebzig", th: "70 (ตัด -en)" },
+      { cat: 1, catName: "Zahlen", de: "achtzig", th: "80" },
+      { cat: 1, catName: "Zahlen", de: "neunzig", th: "90" },
+      { cat: 1, catName: "Zahlen", de: "hundert", th: "100" },
+      { cat: 1, catName: "Zahlen", de: "tausend", th: "1,000" },
+      { cat: 1, catName: "Zahlen", de: "eine Million", th: "1,000,000" },
+
+      // 3. FAMILIE UND PERSONEN
+      { cat: 2, catName: "Familie und Personen", article: "der", de: "Vater", th: "พ่อ", plural: "die Väter" },
+      { cat: 2, catName: "Familie und Personen", article: "die", de: "Mutter", th: "แม่", plural: "die Mütter" },
+      { cat: 2, catName: "Familie und Personen", article: "die", de: "Eltern", th: "พ่อแม่ (พหูพจน์)", plural: "die Eltern" },
+      { cat: 2, catName: "Familie und Personen", article: "der", de: "Sohn", th: "ลูกชาย", plural: "die Söhne" },
+      { cat: 2, catName: "Familie und Personen", article: "die", de: "Tochter", th: "ลูกสาว", plural: "die Töchter" },
+      { cat: 2, catName: "Familie und Personen", article: "der", de: "Bruder", th: "พี่ชาย/น้องชาย", plural: "die Brüder" },
+      { cat: 2, catName: "Familie und Personen", article: "die", de: "Schwester", th: "พี่สาว/น้องสาว", plural: "die Schwestern" },
+      { cat: 2, catName: "Familie und Personen", article: "die", de: "Geschwister", th: "พี่น้อง (พหูพจน์)", plural: "die Geschwister" },
+      { cat: 2, catName: "Familie und Personen", article: "der", de: "Großvater / Opa", th: "ปู่ / ตา", plural: "die Großväter / Opas" },
+      { cat: 2, catName: "Familie und Personen", article: "die", de: "Großmutter / Oma", th: "ย่า / ยาย", plural: "die Großmütter / Omas" },
+      { cat: 2, catName: "Familie und Personen", article: "die", de: "Großeltern", th: "ปู่ย่าตายาย (พหูพจน์)", plural: "die Großeltern" },
+      { cat: 2, catName: "Familie und Personen", article: "das", de: "Baby", th: "ทารก", plural: "die Babys" },
+      { cat: 2, catName: "Familie und Personen", article: "das", de: "Kind", th: "เด็ก / ลูก", plural: "die Kinder" },
+      { cat: 2, catName: "Familie und Personen", article: "der", de: "Junge", th: "เด็กผู้ชาย", plural: "die Jungen" },
+      { cat: 2, catName: "Familie und Personen", article: "das", de: "Mädchen", th: "เด็กผู้หญิง", plural: "die Mädchen" },
+      { cat: 2, catName: "Familie und Personen", article: "der", de: "Mann", th: "ผู้ชาย / สามี", plural: "die Männer" },
+      { cat: 2, catName: "Familie und Personen", article: "die", de: "Frau", th: "ผู้หญิง / ภรรยา", plural: "die Frauen" },
+      { cat: 2, catName: "Familie und Personen", article: "der", de: "Verwandte", th: "ญาติ", plural: "die Verwandten" },
+
+      // 4. BERUFE
+      { cat: 3, catName: "Berufe", article: "der", de: "Architekt", th: "สถาปนิก (ชาย)", female: "die Architektin", pluralFemale: "die Architektinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Arzt", th: "แพทย์ / หมอ (ชาย)", female: "die Ärztin", pluralFemale: "die Ärztinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Elektriker", th: "ช่างไฟฟ้า (ชาย)", female: "die Elektrikerin", pluralFemale: "die Elektrikerinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Erzieher", th: "ครูปฐมวัย (ชาย)", female: "die Erzieherin", pluralFemale: "die Erzieherinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Friseur", th: "ช่างตัดผม (ชาย)", female: "die Friseurin", pluralFemale: "die Friseurinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Informatiker", th: "นักไอที/โปรแกรมเมอร์ (ชาย)", female: "die Informatikerin", pluralFemale: "die Informatikerinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Ingenieur", th: "วิศวกร (ชาย)", female: "die Ingenieurin", pluralFemale: "die Ingenieurinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Journalist", th: "นักข่าว (ชาย)", female: "die Journalistin", pluralFemale: "die Journalistinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Jurist", th: "นักกฎหมาย (ชาย)", female: "die Juristin", pluralFemale: "die Juristinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Kellner", th: "พนักงานเสิร์ฟ (ชาย)", female: "die Kellnerin", pluralFemale: "die Kellnerinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Koch", th: "พ่อครัว", female: "die Köchin", pluralFemale: "die Köchinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Lehrer", th: "ครู (ชาย)", female: "die Lehrerin", pluralFemale: "die Lehrerinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Mechaniker", th: "ช่างเครื่องยนต์ (ชาย)", female: "die Mechanikerin", pluralFemale: "die Mechanikerinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Polizist", th: "ตำรวจ (ชาย)", female: "die Polizistin", pluralFemale: "die Polizistinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Student", th: "นักศึกษา (ชาย)", female: "die Studentin", pluralFemale: "die Studentinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Taxifahrer", th: "คนขับแท็กซี่ (ชาย)", female: "die Taxifahrerin", pluralFemale: "die Taxifahrerinnen" },
+      { cat: 3, catName: "Berufe", article: "der", de: "Verkäufer", th: "พนักงานขาย (ชาย)", female: "die Verkäuferin", pluralFemale: "die Verkäuferinnen" },
+
+      // 5. ORTE IN DER STADT UND GEBÄUDE
+      { cat: 4, catName: "Orte in der Stadt", article: "der", de: "Bahnhof", th: "สถานีรถไฟ", plural: "die Bahnhöfe" },
+      { cat: 4, catName: "Orte in der Stadt", article: "der", de: "Hafen", th: "ท่าเรือ", plural: "die Häfen" },
+      { cat: 4, catName: "Orte in der Stadt", article: "der", de: "Markt", th: "ตลาด", plural: "die Märkte" },
+      { cat: 4, catName: "Orte in der Stadt", article: "der", de: "Park", th: "สวนสาธารณะ", plural: "die Parks" },
+      { cat: 4, catName: "Orte in der Stadt", article: "der", de: "Turm", th: "หอคอย", plural: "die Türme" },
+      { cat: 4, catName: "Orte in der Stadt", article: "das", de: "Hotel", th: "โรงแรม", plural: "die Hotels" },
+      { cat: 4, catName: "Orte in der Stadt", article: "das", de: "Café", th: "ร้านกาแฟ", plural: "die Cafés" },
+      { cat: 4, catName: "Orte in der Stadt", article: "das", de: "Kino", th: "โรงภาพยนตร์", plural: "die Kinos" },
+      { cat: 4, catName: "Orte in der Stadt", article: "das", de: "Krankenhaus", th: "โรงพยาบาล", plural: "die Krankenhäuser" },
+      { cat: 4, catName: "Orte in der Stadt", article: "das", de: "Museum", th: "พิพิธภัณฑ์", plural: "die Museen" },
+      { cat: 4, catName: "Orte in der Stadt", article: "das", de: "Rathaus", th: "ศาลาว่าการเมือง", plural: "die Rathäuser" },
+      { cat: 4, catName: "Orte in der Stadt", article: "das", de: "Restaurant", th: "ร้านอาหาร", plural: "die Restaurants" },
+      { cat: 4, catName: "Orte in der Stadt", article: "das", de: "Stadion", th: "สนามกีฬา", plural: "die Stadien" },
+      { cat: 4, catName: "Orte in der Stadt", article: "das", de: "Theater", th: "โรงละคร", plural: "die Theater" },
+      { cat: 4, catName: "Orte in der Stadt", article: "die", de: "Bibliothek", th: "ห้องสมุด", plural: "die Bibliotheken" },
+      { cat: 4, catName: "Orte in der Stadt", article: "die", de: "Brücke", th: "สะพาน", plural: "die Brücken" },
+      { cat: 4, catName: "Orte in der Stadt", article: "die", de: "Kirche", th: "โบสถ์", plural: "die Kirchen" },
+      { cat: 4, catName: "Orte in der Stadt", article: "die", de: "Mensa", th: "โรงอาหารมหาวิทยาลัย", plural: "die Mensen" },
+      { cat: 4, catName: "Orte in der Stadt", article: "die", de: "Musikschule", th: "โรงเรียนดนตรี", plural: "die Musikschulen" },
+      { cat: 4, catName: "Orte in der Stadt", article: "die", de: "Praxis", th: "คลินิก", plural: "die Praxen" },
+      { cat: 4, catName: "Orte in der Stadt", article: "die", de: "Schule", th: "โรงเรียน", plural: "die Schulen" },
+      { cat: 4, catName: "Orte in der Stadt", article: "die", de: "Uni / Universität", th: "มหาวิทยาลัย", plural: "die Unis / Universitäten" },
+
+      // 6. VERKEHRSMITTEL UND RICHTUNGEN
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "der", de: "Bus", th: "รถประจำทาง", plural: "die Busse" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "der", de: "Zug", th: "รถไฟ", plural: "die Züge" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "das", de: "Auto", th: "รถยนต์", plural: "die Autos" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "das", de: "Fahrrad", th: "รถจักรยาน", plural: "die Fahrräder" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "das", de: "Motorrad", th: "รถจักรยานยนต์", plural: "die Motorräder" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "das", de: "Flugzeug", th: "เครื่องบิน", plural: "die Flugzeuge" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "das", de: "Schiff", th: "เรือ", plural: "die Schiffe" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "die", de: "S-Bahn", th: "รถไฟย่านเมือง", plural: "die S-Bahnen" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "die", de: "U-Bahn", th: "รถไฟใต้ดิน", plural: "die U-Bahnen" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", article: "die", de: "Straßenbahn", th: "รถราง", plural: "die Straßenbahnen" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", de: "zu Fuß gehen", th: "เดินเท้า / เดินไป" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", de: "links", th: "ทางซ้าย / เลี้ยวซ้าย" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", de: "rechts", th: "ทางขวา / เลี้ยวขวา" },
+      { cat: 5, catName: "Verkehrsmittel und Richtungen", de: "geradeaus", th: "ตรงไปข้างหน้า" },
+
+      // 7. ESSEN UND TRINKEN
+      { cat: 6, catName: "Essen und Trinken", article: "der", de: "Kaffee", th: "กาแฟ", plural: "die Kaffees" },
+      { cat: 6, catName: "Essen und Trinken", article: "der", de: "Tee", th: "ชา", plural: "die Tees" },
+      { cat: 6, catName: "Essen und Trinken", article: "der", de: "Saft", th: "น้ำผลไม้", plural: "die Säfte" },
+      { cat: 6, catName: "Essen und Trinken", article: "der", de: "Wein", th: "ไวน์", plural: "die Weine" },
+      { cat: 6, catName: "Essen und Trinken", article: "das", de: "Wasser", th: "น้ำเปล่า" },
+      { cat: 6, catName: "Essen und Trinken", article: "die", de: "Milch", th: "นมสด" },
+      { cat: 6, catName: "Essen und Trinken", article: "der", de: "Kuchen", th: "เค้ก", plural: "die Kuchen" },
+      { cat: 6, catName: "Essen und Trinken", article: "der", de: "Apfel", th: "แอปเปิล", plural: "die Äpfel" },
+      { cat: 6, catName: "Essen und Trinken", article: "der", de: "Käse", th: "ชีส" },
+      { cat: 6, catName: "Essen und Trinken", article: "der", de: "Reis", th: "ข้าว" },
+      { cat: 6, catName: "Essen und Trinken", article: "der", de: "Salat", th: "สลัด", plural: "die Salate" },
+      { cat: 6, catName: "Essen und Trinken", article: "das", de: "Brot", th: "ขนมปัง", plural: "die Brote" },
+      { cat: 6, catName: "Essen und Trinken", article: "das", de: "Brötchen", th: "ขนมปังก้อนเล็ก", plural: "die Brötchen" },
+      { cat: 6, catName: "Essen und Trinken", article: "das", de: "Ei", th: "ไข่ไก่", plural: "die Eier" },
+      { cat: 6, catName: "Essen und Trinken", article: "das", de: "Fleisch", th: "เนื้อสัตว์" },
+      { cat: 6, catName: "Essen und Trinken", article: "das", de: "Gemüse", th: "ผัก" },
+      { cat: 6, catName: "Essen und Trinken", article: "das", de: "Müsli", th: "มูสลี / ซีเรียล", plural: "die Müslis" },
+      { cat: 6, catName: "Essen und Trinken", article: "das", de: "Obst", th: "ผลไม้" },
+      { cat: 6, catName: "Essen und Trinken", article: "die", de: "Banane", th: "กล้วย", plural: "die Bananen" },
+      { cat: 6, catName: "Essen und Trinken", article: "die", de: "Butter", th: "เนย" },
+      { cat: 6, catName: "Essen und Trinken", article: "die", de: "Kartoffel", th: "มันฝรั่ง", plural: "die Kartoffeln" },
+      { cat: 6, catName: "Essen und Trinken", article: "die", de: "Tomate", th: "มะเขือเทศ", plural: "die Tomaten" },
+      { cat: 6, catName: "Essen und Trinken", article: "die", de: "Wurst", th: "ไส้กรอก", plural: "die Würste" },
+
+      // 8. ZEITANGABEN, WOCHENTAGE UND TAGESZEITEN
+      { cat: 7, catName: "Zeitangaben und Wochentage", de: "Montag", th: "วันจันทร์ (am Montag)" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", de: "Dienstag", th: "วันอังคาร" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", de: "Mittwoch", th: "วันพุธ" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", de: "Donnerstag", th: "วันพฤหัสบดี" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", de: "Freitag", th: "วันศุกร์" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", de: "Samstag", th: "วันเสาร์" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", de: "Sonntag", th: "วันอาทิตย์" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "der", de: "Morgen", th: "ตอนเช้า (am Morgen)", plural: "die Morgen" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "der", de: "Vormittag", th: "ตอนสาย (am Vormittag)", plural: "die Vormittage" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "der", de: "Mittag", th: "ตอนเที่ยง (am Mittag)", plural: "die Mittage" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "der", de: "Nachmittag", th: "ตอนบ่าย (am Nachmittag)", plural: "die Nachmittage" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "der", de: "Abend", th: "ตอนเย็น/ค่ำ (am Abend)", plural: "die Abende" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "die", de: "Nacht", th: "ตอนกลางคืน (in der Nacht!)", plural: "die Nächte" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "die", de: "Sekunde", th: "วินาที", plural: "die Sekunden" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "die", de: "Minute", th: "นาที", plural: "die Minuten" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "die", de: "Stunde", th: "ชั่วโมง", plural: "die Stunden" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "der", de: "Tag", th: "วัน", plural: "die Tage" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "die", de: "Woche", th: "สัปดาห์", plural: "die Wochen" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "der", de: "Monat", th: "เดือน", plural: "die Monate" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "das", de: "Jahr", th: "ปี", plural: "die Jahre" },
+      { cat: 7, catName: "Zeitangaben und Wochentage", article: "das", de: "Wochenende", th: "เสาร์-อาทิตย์", plural: "die Wochenenden" },
+
+      // 9. ADJEKTIVE
+      { cat: 8, catName: "Adjektive", de: "alt", th: "เก่า / แก่", opposite: "neu / jung" },
+      { cat: 8, catName: "Adjektive", de: "neu", th: "ใหม่", opposite: "alt" },
+      { cat: 8, catName: "Adjektive", de: "jung", th: "หนุ่มสาว", opposite: "alt" },
+      { cat: 8, catName: "Adjektive", de: "klein", th: "เล็ก", opposite: "groß" },
+      { cat: 8, catName: "Adjektive", de: "groß", th: "ใหญ่", opposite: "klein" },
+      { cat: 8, catName: "Adjektive", de: "kalt", th: "หนาว / เย็น", opposite: "warm / heiß" },
+      { cat: 8, catName: "Adjektive", de: "warm", th: "อบอุ่น", opposite: "kalt" },
+      { cat: 8, catName: "Adjektive", de: "heiß", th: "ร้อน", opposite: "kalt" },
+      { cat: 8, catName: "Adjektive", de: "kurz", th: "สั้น", opposite: "lang" },
+      { cat: 8, catName: "Adjektive", de: "lang", th: "ยาว", opposite: "kurz" },
+      { cat: 8, catName: "Adjektive", de: "pünktlich", th: "ตรงเวลา", opposite: "spät" },
+      { cat: 8, catName: "Adjektive", de: "spät", th: "สาย / ดึก", opposite: "pünktlich" },
+      { cat: 8, catName: "Adjektive", de: "richtig", th: "ถูกต้อง", opposite: "falsch" },
+      { cat: 8, catName: "Adjektive", de: "falsch", th: "ผิด", opposite: "richtig" },
+      { cat: 8, catName: "Adjektive", de: "höflich", th: "สุภาพ", opposite: "unhöflich" },
+      { cat: 8, catName: "Adjektive", de: "billig / günstig", th: "ราคาถูก", opposite: "teuer" },
+      { cat: 8, catName: "Adjektive", de: "teuer", th: "แพง", opposite: "billig / günstig" },
+      { cat: 8, catName: "Adjektive", de: "lecker", th: "อร่อย" },
+      { cat: 8, catName: "Adjektive", de: "satt", th: "อิ่ม" },
+      { cat: 8, catName: "Adjektive", de: "stressig", th: "น่าเครียด" },
+      { cat: 8, catName: "Adjektive", de: "bekannt", th: "เป็นที่รู้จัก" },
+      { cat: 8, catName: "Adjektive", de: "fertig", th: "เสร็จสิ้น" },
+
+      // 10. VERBEN NACH THEMEN
+      { cat: 9, catName: "Verben", de: "heißen", th: "ชื่อว่า", note: "du heißt (ตัด -s-)" },
+      { cat: 9, catName: "Verben", de: "kommen", th: "มาจาก" },
+      { cat: 9, catName: "Verben", de: "wohnen", th: "อาศัยอยู่" },
+      { cat: 9, catName: "Verben", de: "sprechen", th: "พูด", conjugation: "du sprichst / er spricht (e ➔ i)" },
+      { cat: 9, catName: "Verben", de: "lesen", th: "อ่าน", conjugation: "du liest / er liest (e ➔ ie)" },
+      { cat: 9, catName: "Verben", de: "schreiben", th: "เขียน" },
+      { cat: 9, catName: "Verben", de: "schlafen", th: "นอนหลับ", conjugation: "du schläfst / er schläft (a ➔ ä)" },
+      { cat: 9, catName: "Verben", de: "duschen", th: "อาบน้ำ" },
+      { cat: 9, catName: "Verben", de: "arbeiten", th: "ทำงาน", conjugation: "du arbeitest / er arbeitet (+e)" },
+      { cat: 9, catName: "Verben", de: "studieren", th: "เรียนระดับมหาวิทยาลัย" },
+      { cat: 9, catName: "Verben", de: "treffen", th: "พบ / เจอ", conjugation: "du triffst / er trifft (e ➔ i)" },
+      { cat: 9, catName: "Verben", de: "spielen", th: "เล่น" },
+      { cat: 9, catName: "Verben", de: "kaufen", th: "ซื้อ" },
+      { cat: 9, catName: "Verben", de: "kosten", th: "ราคาเท่ากับ" },
+      { cat: 9, catName: "Verben", de: "brauchen", th: "ต้องการ / จำเป็น" },
+      { cat: 9, catName: "Verben", de: "essen", th: "กิน / ทาน", conjugation: "du isst / er isst (e ➔ i)" },
+      { cat: 9, catName: "Verben", de: "trinken", th: "ดื่ม" },
+      { cat: 9, catName: "Verben", de: "kochen", th: "ทำอาหาร" },
+      { cat: 9, catName: "Verben", de: "schmecken", th: "รสชาติอร่อย" },
+      { cat: 9, catName: "Verben", de: "nehmen", th: "เอา / สั่งอาหาร", conjugation: "du nimmst / er nimmt (e ➔ i)" },
+      { cat: 9, catName: "Verben", de: "mögen", th: "ชอบ", conjugation: "ich mag, du magst, er mag" },
+      { cat: 9, catName: "Verben", de: "möchten", th: "อยากได้ / ต้องการ", conjugation: "ich möchte, du möchtest" },
+      { cat: 9, catName: "Verben", de: "fahren", th: "ขับรถ / เดินทาง", conjugation: "du fährst / er fährt (a ➔ ä)" },
+      { cat: 9, catName: "Verben", de: "suchen", th: "ค้นหา" },
+      { cat: 9, catName: "Verben", de: "finden", th: "ค้นพบ / หาเจอ" }
+    ];
+
+    const LEVEL_CONFIG = [
+      { id: 0, title: "Länder und Sprachen", titleTh: "ประเทศและภาษา (15 คำ)", icon: "🌍", color: "from-blue-500 to-indigo-600" },
+      { id: 1, title: "Zahlen", titleTh: "ตัวเลข 0–1,000,000 (32 คำ)", icon: "🔢", color: "from-amber-400 to-orange-500" },
+      { id: 2, title: "Familie und Personen", titleTh: "ครอบครัวและบุคคล (18 คำ)", icon: "👨‍👩‍👧‍👦", color: "from-emerald-400 to-teal-600" },
+      { id: 3, title: "Berufe", titleTh: "อาชีพ ชาย/หญิง (17 คำ)", icon: "💼", color: "from-sky-400 to-blue-600" },
+      { id: 4, title: "Orte und Gebäude", titleTh: "สถานที่และอาคาร (22 คำ)", icon: "🏙️", color: "from-purple-400 to-indigo-600" },
+      { id: 5, title: "Verkehrsmittel & Directions", titleTh: "ยานพาหนะ & บอกทาง (14 คำ)", icon: "🚗", color: "from-rose-400 to-red-600" },
+      { id: 6, title: "Essen und Trinken", titleTh: "อาหารและเครื่องดื่ม (23 คำ)", icon: "🍕", color: "from-yellow-400 to-amber-600" },
+      { id: 7, title: "Zeit & Wochentage", titleTh: "เวลา วัน ช่วงเวลา (21 คำ)", icon: "⏰", color: "from-teal-400 to-emerald-600" },
+      { id: 8, title: "Adjektive", titleTh: "คำคุณศัพท์ตรงข้าม (22 คำ)", icon: "🎨", color: "from-pink-400 to-rose-600" },
+      { id: 9, title: "Verben & Vokalwechsel", titleTh: "คำกริยาและการผันรูป (25 คำ)", icon: "⚡", color: "from-violet-500 to-purple-700" }
+    ];
+
+    /* ==========================================================================
+       APP STATE
+       ========================================================================== */
+    let userStats = {
+      xp: 0,
+      hearts: 5,
+      maxHearts: 5,
+      streak: 1,
+      completedLevels: {}
+    };
+
+    let currentLevelIndex = 0; // -1 for Mix All
+    let itemQueue = [];        // Dynamic queue for Spaced Repetition / Re-queue
+    let initialQueueLength = 0;
+    let masteredCount = 0;
+    let selectedOptionIndex = null;
+    let startTime = 0;
+    let totalAttempts = 0;
+    let correctAttempts = 0;
+
+    /* ==========================================================================
+       AUDIO SYNTHESIZER
+       ========================================================================== */
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playTone(freq, type, duration, delay = 0) {
+      setTimeout(() => {
+        try {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + duration);
+        } catch (e) {}
+      }, delay);
+    }
+
+    function playCorrectSound() {
+      playTone(523.25, 'triangle', 0.12, 0);
+      playTone(659.25, 'triangle', 0.12, 80);
+      playTone(783.99, 'triangle', 0.15, 160);
+      playTone(1046.50, 'triangle', 0.3, 240);
+    }
+
+    function playIncorrectSound() {
+      playTone(220, 'sawtooth', 0.15, 0);
+      playTone(180, 'sawtooth', 0.25, 120);
+    }
+
+    function playVictorySound() {
+      playTone(523.25, 'square', 0.12, 0);
+      playTone(659.25, 'square', 0.12, 100);
+      playTone(783.99, 'square', 0.12, 200);
+      playTone(1046.50, 'square', 0.4, 300);
+    }
+
+    function speakGerman(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      
+      let speakText = text.replace(/^(der|die|das)\s+/, '');
+      speakText = speakText.split('/')[0].trim();
+
+      const utterance = new SpeechSynthesisUtterance(speakText);
+      utterance.lang = 'de-DE';
+      utterance.rate = 0.88;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    /* ==========================================================================
+       INIT & LOCAL STORAGE
+       ========================================================================== */
+    window.onload = function() {
+      loadStatsFromStorage();
+      renderLevelsGrid();
+      populateCategoryFilter();
+      updateStatsUI();
+    };
+
+    function loadStatsFromStorage() {
+      const saved = localStorage.getItem('deutschlingo_stats_v2');
+      if (saved) {
+        try { userStats = JSON.parse(saved); } catch(e) {}
+      }
+    }
+
+    function saveStatsToStorage() {
+      localStorage.setItem('deutschlingo_stats_v2', JSON.stringify(userStats));
+    }
+
+    function updateStatsUI() {
+      document.getElementById('stat-xp').textContent = userStats.xp;
+      document.getElementById('stat-hearts').textContent = userStats.hearts;
+      document.getElementById('stat-streak').textContent = userStats.streak;
+
+      const heartBox = document.getElementById('heart-stat-box');
+      if (userStats.hearts <= 1) {
+        heartBox.classList.add('animate-heart');
+      } else {
+        heartBox.classList.remove('animate-heart');
+      }
+
+      const restoreCard = document.getElementById('heart-restore-card');
+      if (userStats.hearts <= 0) {
+        restoreCard.classList.remove('hidden');
+      } else {
+        restoreCard.classList.add('hidden');
+      }
+    }
+
+    function restoreHearts() {
+      userStats.hearts = userStats.maxHearts;
+      saveStatsToStorage();
+      updateStatsUI();
+    }
+
+    /* ==========================================================================
+       HELPERS FOR CLEAN ARTICLES & PLURALS (PREVENTING "DIE DIE" BUG)
+       ========================================================================== */
+    function getCleanBaseWord(deStr) {
+      if (!deStr) return "";
+      return deStr.replace(/^(der|die|das)\s+/i, '').trim();
+    }
+
+    function getSingularWithArticle(item) {
+      const cleanDe = getCleanBaseWord(item.de);
+      if (item.article && (item.article === "der" || item.article === "die" || item.article === "das")) {
+        return `${item.article} ${cleanDe}`;
+      }
+      return cleanDe;
+    }
+
+    function getPluralWithArticle(item) {
+      if (!item.plural) return "";
+      const cleanPlural = item.plural.replace(/^(die)\s+/i, '').trim();
+      return `die ${cleanPlural}`;
+    }
+
+    /* ==========================================================================
+       VIEW ROUTING
+       ========================================================================== */
+    function showView(viewId) {
+      document.getElementById('view-home').classList.add('hidden');
+      document.getElementById('view-quiz').classList.add('hidden');
+      document.getElementById('view-victory').classList.add('hidden');
+      document.getElementById('view-gameover').classList.add('hidden');
+      document.getElementById('view-library').classList.add('hidden');
+
+      document.getElementById(viewId).classList.remove('hidden');
+
+      const quizProgress = document.getElementById('quiz-progress-container');
+      const appTitle = document.getElementById('app-title-container');
+
+      if (viewId === 'view-quiz') {
+        quizProgress.classList.remove('hidden');
+        appTitle.classList.add('hidden');
+      } else {
+        quizProgress.classList.add('hidden');
+        appTitle.classList.remove('hidden');
+      }
+
+      hideBottomFeedback();
+    }
+
+    function goToHome() {
+      showView('view-home');
+      renderLevelsGrid();
+      updateStatsUI();
+    }
+
+    /* ==========================================================================
+       RENDER HOME LEVELS GRID
+       ========================================================================== */
+    function renderLevelsGrid() {
+      const container = document.getElementById('levels-grid');
+      container.innerHTML = '';
+
+      LEVEL_CONFIG.forEach((lvl, idx) => {
+        const isCompleted = userStats.completedLevels[idx] !== undefined;
+        const card = document.createElement('div');
+        card.className = `bg-white border-2 border-slate-200 hover:border-slate-300 rounded-3xl p-5 shadow-sm transition flex items-center justify-between cursor-pointer group`;
+        card.onclick = () => startQuiz(idx);
+
+        card.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr ${lvl.color} flex items-center justify-center text-3xl shadow-sm text-white group-hover:scale-105 transition-transform">
+              ${lvl.icon}
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">หมวดที่ ${lvl.id + 1}</span>
+                ${isCompleted ? '<span class="bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded-full font-bold">✓ ผ่านแล้ว</span>' : ''}
+              </div>
+              <h3 class="font-extrabold text-slate-800 text-base sm:text-lg leading-snug">${lvl.title}</h3>
+              <p class="text-xs font-bold text-slate-500">${lvl.titleTh}</p>
+            </div>
+          </div>
+          <button class="btn-3d btn-duo-green px-4 py-2 rounded-xl text-white font-extrabold text-sm flex-shrink-0">
+            เริ่ม ➔
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    /* ==========================================================================
+       DYNAMIC QUESTION GENERATOR ENGINE & RE-QUEUE SYSTEM
+       ========================================================================== */
+    function startQuiz(levelIndex) {
+      if (userStats.hearts <= 0) {
+        alert("คุณไม่มีหัวใจเหลือแล้ว! โปรดเติมหัวใจก่อนเล่น");
+        return;
+      }
+
+      currentLevelIndex = levelIndex;
+      let rawItems = [];
+
+      if (levelIndex === -1) {
+        // Endless Mix mode: take 15 random items from entire vocab database
+        rawItems = shuffleArray([...MASTER_VOCAB]).slice(0, 15);
+      } else {
+        // Specific category
+        rawItems = MASTER_VOCAB.filter(item => item.cat === levelIndex);
+      }
+
+      // Generate dynamic questions for each vocab item
+      const generatedQuestions = [];
+      rawItems.forEach(item => {
+        // Always include translation question
+        generatedQuestions.push(createTranslateQuestion(item, rawItems));
+        
+        // If noun has article (der/die/das), add Article question randomly
+        if (item.article && (item.article === "der" || item.article === "die" || item.article === "das")) {
+          generatedQuestions.push(createArticleQuestion(item));
+        }
+
+        // If item has plural form, add Plural question
+        if (item.plural) {
+          generatedQuestions.push(createPluralQuestion(item, rawItems));
+        }
+      });
+
+      // Shuffle question queue
+      itemQueue = shuffleArray(generatedQuestions);
+      initialQueueLength = itemQueue.length;
+      masteredCount = 0;
+      totalAttempts = 0;
+      correctAttempts = 0;
+      startTime = Date.now();
+
+      showView('view-quiz');
+      renderQuestion();
+    }
+
+    function createTranslateQuestion(item, pool) {
+      const isDeToTh = Math.random() > 0.3;
+      const displayDe = getSingularWithArticle(item);
+      
+      let choices = [];
+      let answer = "";
+      
+      if (isDeToTh) {
+        answer = item.th;
+        const otherThs = pool.filter(p => p.th !== item.th).map(p => p.th);
+        const distractors = getRandomElements(otherThs, 3);
+        choices = shuffleArray([answer, ...distractors]);
+      } else {
+        answer = displayDe;
+        const otherDes = pool.filter(p => p.de !== item.de).map(p => getSingularWithArticle(p));
+        const distractors = getRandomElements(otherDes, 3);
+        choices = shuffleArray([answer, ...distractors]);
+      }
+
+      return {
+        vocab: item,
+        type: isDeToTh ? "DE_TO_TH" : "TH_TO_DE",
+        badge: isDeToTh ? "แปล เยอรมัน ➔ ไทย" : "แปล ไทย ➔ เยอรมัน",
+        subtext: isDeToTh ? "คำนี้แปลว่าอะไร?" : "คำนี้ตรงกับคำภาษาเยอรมันใด?",
+        prompt: isDeToTh ? displayDe : item.th,
+        extra: item.conjugation ? `💡 ${item.conjugation}` : null,
+        answer: answer,
+        options: choices,
+        isRequeue: false
+      };
+    }
+
+    function createArticleQuestion(item) {
+      const cleanDe = getCleanBaseWord(item.de);
+      return {
+        vocab: item,
+        type: "ARTICLE",
+        badge: "ตอบเพศคำนาม (Artikel)",
+        subtext: `คำนาม "${cleanDe}" (${item.th}) ใช้ Artikel ใด?`,
+        prompt: cleanDe,
+        extra: null,
+        answer: item.article,
+        options: ["der", "die", "das"],
+        isRequeue: false
+      };
+    }
+
+    function createPluralQuestion(item, pool) {
+      const singularWithArt = getSingularWithArticle(item);
+      const cleanDe = getCleanBaseWord(item.de);
+      const answer = getPluralWithArticle(item);
+      
+      // Generate clean distractors with single 'die' prefix
+      const fakeCandidates = [
+        `die ${cleanDe}`,
+        `die ${cleanDe}n`,
+        `die ${cleanDe}e`,
+        `die ${cleanDe}s`,
+        `die ${cleanDe}er`
+      ];
+
+      const validFakes = Array.from(new Set(fakeCandidates.filter(f => f.toLowerCase() !== answer.toLowerCase())));
+      const distractors = getRandomElements(validFakes, 3);
+
+      while (distractors.length < 3) {
+        const randomItem = pool[Math.floor(Math.random() * pool.length)];
+        const candidate = randomItem.plural ? getPluralWithArticle(randomItem) : `die ${getCleanBaseWord(randomItem.de)}n`;
+        if (candidate.toLowerCase() !== answer.toLowerCase() && !distractors.includes(candidate)) {
+          distractors.push(candidate);
+        }
+      }
+
+      return {
+        vocab: item,
+        type: "PLURAL",
+        badge: "รูปพหูพจน์ (Plural)",
+        subtext: `รูปพหูพจน์ของ "${singularWithArt}" (${item.th}) คือข้อใด?`,
+        prompt: singularWithArt,
+        extra: null,
+        answer: answer,
+        options: shuffleArray([answer, ...distractors]),
+        isRequeue: false
+      };
+    }
+
+    function renderQuestion() {
+      selectedOptionIndex = null;
+      hideBottomFeedback();
+
+      const q = itemQueue[0];
+      
+      // Update progress bar
+      const progressPercent = Math.min(100, Math.round((masteredCount / initialQueueLength) * 100));
+      document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+      document.getElementById('quiz-queue-count').textContent = `${masteredCount}/${initialQueueLength}`;
+
+      document.getElementById('question-badge').textContent = q.badge;
+      document.getElementById('question-subtext').textContent = q.subtext;
+      document.getElementById('question-prompt').textContent = q.prompt;
+      
+      const extraEl = document.getElementById('question-extra');
+      if (q.extra) {
+        extraEl.textContent = q.extra;
+        extraEl.classList.remove('hidden');
+      } else {
+        extraEl.classList.add('hidden');
+      }
+
+      const requeueTag = document.getElementById('requeue-tag');
+      if (q.isRequeue) {
+        requeueTag.classList.remove('hidden');
+      } else {
+        requeueTag.classList.add('hidden');
+      }
+
+      // Render choices
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      q.options.forEach((optText, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `btn-3d btn-duo-gray w-full py-4 px-5 rounded-2xl font-black text-slate-700 text-base sm:text-lg flex items-center justify-between transition-all`;
+        btn.innerHTML = `
+          <span>${optText}</span>
+          <span class="w-6 h-6 rounded-full border-2 border-slate-200 text-xs flex items-center justify-center font-bold text-slate-300">${idx + 1}</span>
+        `;
+        btn.onclick = () => selectOption(idx, btn);
+        container.appendChild(btn);
+      });
+
+      showCheckBottomBar();
+
+      // Audio auto-read
+      if (q.vocab && q.vocab.de) {
+        setTimeout(() => speakGerman(q.vocab.de), 250);
+      }
+    }
+
+    function playCurrentAudio() {
+      const q = itemQueue[0];
+      if (q && q.vocab && q.vocab.de) {
+        speakGerman(q.vocab.de);
+      }
+    }
+
+    function selectOption(index, btnEl) {
+      selectedOptionIndex = index;
+      const buttons = document.querySelectorAll('#options-container button');
+      buttons.forEach(b => b.classList.remove('selected'));
+      btnEl.classList.add('selected');
+
+      const checkBtn = document.getElementById('feedback-action-btn');
+      checkBtn.disabled = false;
+      checkBtn.classList.remove('opacity-50');
+    }
+
+    /* ==========================================================================
+       CHECK ANSWER & SPACED REPETITION QUEUE RE-INSERTION
+       ========================================================================== */
+    let currentStep = 'CHECK';
+
+    function showCheckBottomBar() {
+      currentStep = 'CHECK';
+      const drawer = document.getElementById('bottom-feedback');
+      const actionBtn = document.getElementById('feedback-action-btn');
+      const iconBg = document.getElementById('feedback-icon-bg');
+
+      drawer.className = "fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-slate-200 transform translate-y-0 transition-transform duration-300 ease-out";
+      iconBg.className = "hidden";
+
+      actionBtn.textContent = "ตรวจคำตอบ";
+      actionBtn.className = "btn-3d btn-duo-green w-full sm:w-48 py-3.5 rounded-2xl text-white font-black text-base tracking-wide uppercase opacity-50";
+      actionBtn.disabled = true;
+    }
+
+    function handleBottomButtonClick() {
+      if (currentStep === 'CHECK') {
+        checkAnswer();
+      } else {
+        advanceQueue();
+      }
+    }
+
+    function checkAnswer() {
+      if (selectedOptionIndex === null) return;
+
+      totalAttempts++;
+      const q = itemQueue[0];
+      const buttons = document.querySelectorAll('#options-container button');
+      const chosenText = buttons[selectedOptionIndex].querySelector('span').textContent;
+      const isCorrect = (chosenText === q.answer);
+
+      const drawer = document.getElementById('bottom-feedback');
+      const actionBtn = document.getElementById('feedback-action-btn');
+      const iconBg = document.getElementById('feedback-icon-bg');
+      const titleEl = document.getElementById('feedback-title');
+      const detailEl = document.getElementById('feedback-detail');
+
+      iconBg.classList.remove('hidden');
+      currentStep = 'CONTINUE';
+
+      if (isCorrect) {
+        correctAttempts++;
+        playCorrectSound();
+
+        // Pop question from queue and increment mastered
+        itemQueue.shift();
+        masteredCount++;
+
+        drawer.className = "fixed bottom-0 left-0 right-0 z-40 bg-emerald-50 border-t-2 border-emerald-300 transform translate-y-0 transition-transform duration-300 ease-out text-emerald-900";
+        iconBg.className = "w-12 h-12 rounded-2xl bg-emerald-500 flex items-center justify-center text-white text-2xl font-black flex-shrink-0 shadow";
+        iconBg.textContent = "✓";
+        titleEl.textContent = "ถูกต้อง! 🎉";
+        detailEl.textContent = q.vocab.note ? `ความหมายเพิ่มเติม: ${q.vocab.note}` : "เก่งมาก!";
+
+        actionBtn.textContent = "ข้อถัดไป ➔";
+        actionBtn.className = "btn-3d btn-duo-green w-full sm:w-48 py-3.5 rounded-2xl text-white font-black text-base tracking-wide uppercase";
+      } else {
+        playIncorrectSound();
+        userStats.hearts = Math.max(0, userStats.hearts - 1);
+        updateStatsUI();
+
+        // RE-QUEUE MECHANISM: Remove from front, flag as requeue, and re-insert 2-3 positions back!
+        const failedQuestion = itemQueue.shift();
+        failedQuestion.isRequeue = true;
+
+        // Calculate insert position (2 to 4 items back)
+        const reinsertPos = Math.min(itemQueue.length, 2 + Math.floor(Math.random() * 2));
+        itemQueue.splice(reinsertPos, 0, failedQuestion);
+
+        drawer.className = "fixed bottom-0 left-0 right-0 z-40 bg-rose-50 border-t-2 border-rose-300 transform translate-y-0 transition-transform duration-300 ease-out text-rose-900";
+        iconBg.className = "w-12 h-12 rounded-2xl bg-rose-500 flex items-center justify-center text-white text-2xl font-black flex-shrink-0 shadow";
+        iconBg.textContent = "✕";
+        titleEl.textContent = "ยังไม่ถูกต้อง (ระบบจะวนข้อนี้มาให้ซ้ำอีกครั้ง)";
+        detailEl.textContent = `คำตอบที่ถูกต้องคือ: "${q.answer}"`;
+
+        actionBtn.textContent = "เข้าใจแล้ว";
+        actionBtn.className = "btn-3d btn-duo-red w-full sm:w-48 py-3.5 rounded-2xl text-white font-black text-base tracking-wide uppercase";
+      }
+    }
+
+    function hideBottomFeedback() {
+      const drawer = document.getElementById('bottom-feedback');
+      drawer.classList.add('translate-y-full');
+    }
+
+    function advanceQueue() {
+      if (userStats.hearts <= 0) {
+        showView('view-gameover');
+        return;
+      }
+
+      if (itemQueue.length > 0) {
+        renderQuestion();
+      } else {
+        finishLevel();
+      }
+    }
+
+    /* ==========================================================================
+       FINISH LEVEL & VICTORY
+       ========================================================================== */
+    function finishLevel() {
+      playVictorySound();
+
+      const accuracy = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 100;
+      const xpEarned = initialQueueLength * 5;
+      const secondsElapsed = Math.round((Date.now() - startTime) / 1000);
+      const mins = Math.floor(secondsElapsed / 60);
+      const secs = secondsElapsed % 60;
+      const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+      userStats.xp += xpEarned;
+      if (currentLevelIndex >= 0) {
+        userStats.completedLevels[currentLevelIndex] = 3;
+      }
+      saveStatsToStorage();
+
+      const levelTitle = currentLevelIndex === -1 ? "โหมดสุ่มรวมทุกหมวด (Endless Mix)" : LEVEL_CONFIG[currentLevelIndex].title;
+      document.getElementById('victory-level-name').textContent = levelTitle;
+      document.getElementById('victory-xp').textContent = `+${xpEarned}`;
+      document.getElementById('victory-accuracy').textContent = `${accuracy}%`;
+      document.getElementById('victory-time').textContent = timeStr;
+
+      showView('view-victory');
+    }
+
+    function nextLevelOrHome() {
+      if (currentLevelIndex >= 0 && currentLevelIndex + 1 < LEVEL_CONFIG.length) {
+        startQuiz(currentLevelIndex + 1);
+      } else {
+        goToHome();
+      }
+    }
+
+    /* ==========================================================================
+       VOCABULARY LIBRARY VIEW
+       ========================================================================== */
+    function openLibrary() {
+      showView('view-library');
+      renderLibraryItems();
+    }
+
+    function populateCategoryFilter() {
+      const select = document.getElementById('lib-category-filter');
+      LEVEL_CONFIG.forEach(lvl => {
+        const opt = document.createElement('option');
+        opt.value = lvl.id;
+        opt.textContent = `${lvl.id + 1}. ${lvl.title}`;
+        select.appendChild(opt);
+      });
+    }
+
+    function renderLibraryItems() {
+      const container = document.getElementById('library-list-container');
+      const searchQuery = document.getElementById('lib-search').value.toLowerCase().trim();
+      const catVal = document.getElementById('lib-category-filter').value;
+
+      let filtered = MASTER_VOCAB;
+
+      if (catVal !== "ALL") {
+        const catId = parseInt(catVal);
+        filtered = filtered.filter(item => item.cat === catId);
+      }
+
+      if (searchQuery) {
+        filtered = filtered.filter(item => 
+          item.de.toLowerCase().includes(searchQuery) || 
+          item.th.toLowerCase().includes(searchQuery) ||
+          (item.plural && item.plural.toLowerCase().includes(searchQuery))
+        );
+      }
+
+      container.innerHTML = '';
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center py-8 text-slate-400 font-bold">ไม่พบคำศัพท์ที่ค้นหา</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "bg-white border-2 border-slate-100 rounded-2xl p-4 flex items-center justify-between hover:border-slate-200 transition";
+        
+        const cleanDe = getCleanBaseWord(item.de);
+        const fullDe = item.article ? `<span class="text-duoBlue font-black">${item.article}</span> ${cleanDe}` : item.de;
+        const pluralStr = item.plural ? `<span class="text-xs text-slate-400 block mt-0.5">พหูพจน์: ${getPluralWithArticle(item)}</span>` : '';
+        const femaleStr = item.female ? `<span class="text-xs text-slate-400 block mt-0.5">เพศหญิง: ${item.female} (${item.pluralFemale})</span>` : '';
+        const noteStr = item.conjugation ? `<span class="text-xs text-amber-600 font-bold block mt-0.5">${item.conjugation}</span>` : '';
+
+        card.innerHTML = `
+          <div>
+            <div class="text-xs font-bold text-slate-400 uppercase mb-0.5">${item.catName}</div>
+            <h4 class="text-base font-black text-slate-800">${fullDe}</h4>
+            <p class="text-sm font-semibold text-slate-600">${item.th}</p>
+            ${pluralStr}
+            ${femaleStr}
+            ${noteStr}
+          </div>
+          <button onclick="speakGerman('${cleanDe}')" class="w-10 h-10 rounded-xl bg-sky-50 text-duoBlue hover:bg-sky-100 flex items-center justify-center font-bold transition flex-shrink-0">
+            🔊
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    /* ==========================================================================
+       UTILITIES
+       ========================================================================== */
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function getRandomElements(arr, count) {
+      const shuffled = shuffleArray(arr);
+      return shuffled.slice(0, Math.min(count, shuffled.length));
+    }
+  </script>
+</body>
+</html>
